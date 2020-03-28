@@ -3,6 +3,8 @@ package com.github.simplesteps.grpc.calculator.server;
 import com.proto.calculator.CalculatorServiceGrpc;
 import com.proto.calculator.ComputeAverageRequest;
 import com.proto.calculator.ComputeAverageResponse;
+import com.proto.calculator.FindMaximumRequest;
+import com.proto.calculator.FindMaximumResponse;
 import com.proto.calculator.PrimeNumberDecompositionRequest;
 import com.proto.calculator.PrimeNumberDecompositionResponse;
 import com.proto.calculator.SumRequest;
@@ -73,5 +75,35 @@ public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServi
       }
     };
     return computeAverageRequestStreamObserver;
+  }
+
+  @Override
+  public StreamObserver<FindMaximumRequest> findMaximum(
+      StreamObserver<FindMaximumResponse> responseObserver) {
+     return new StreamObserver<FindMaximumRequest>() {
+       int currentmaximum = 0;
+       @Override
+       public void onNext(FindMaximumRequest value) {
+         int currentNumber = value.getNumber();
+         if(currentNumber > currentmaximum) {
+           currentmaximum = currentNumber;
+           responseObserver.onNext(FindMaximumResponse.newBuilder()
+               .setMaximum(currentNumber).build());
+         }
+       }
+
+       @Override
+       public void onError(Throwable t) {
+         responseObserver.onCompleted();
+       }
+
+       @Override
+       public void onCompleted() {
+         System.out.println("server done last max");
+         responseObserver.onNext(FindMaximumResponse.newBuilder()
+             .setMaximum(currentmaximum).build());
+         responseObserver.onCompleted();
+       }
+     };
   }
 }
