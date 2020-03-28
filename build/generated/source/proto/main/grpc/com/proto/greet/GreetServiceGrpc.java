@@ -151,6 +151,37 @@ public final class GreetServiceGrpc {
     return getGreetEveryoneMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.proto.greet.GreetWithDeadLineRequest,
+      com.proto.greet.GreetWithDeadLineResponse> getGreetWithDeadLineMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GreetWithDeadLine",
+      requestType = com.proto.greet.GreetWithDeadLineRequest.class,
+      responseType = com.proto.greet.GreetWithDeadLineResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.proto.greet.GreetWithDeadLineRequest,
+      com.proto.greet.GreetWithDeadLineResponse> getGreetWithDeadLineMethod() {
+    io.grpc.MethodDescriptor<com.proto.greet.GreetWithDeadLineRequest, com.proto.greet.GreetWithDeadLineResponse> getGreetWithDeadLineMethod;
+    if ((getGreetWithDeadLineMethod = GreetServiceGrpc.getGreetWithDeadLineMethod) == null) {
+      synchronized (GreetServiceGrpc.class) {
+        if ((getGreetWithDeadLineMethod = GreetServiceGrpc.getGreetWithDeadLineMethod) == null) {
+          GreetServiceGrpc.getGreetWithDeadLineMethod = getGreetWithDeadLineMethod =
+              io.grpc.MethodDescriptor.<com.proto.greet.GreetWithDeadLineRequest, com.proto.greet.GreetWithDeadLineResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GreetWithDeadLine"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.proto.greet.GreetWithDeadLineRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.proto.greet.GreetWithDeadLineResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new GreetServiceMethodDescriptorSupplier("GreetWithDeadLine"))
+              .build();
+        }
+      }
+    }
+    return getGreetWithDeadLineMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -230,6 +261,16 @@ public final class GreetServiceGrpc {
       return asyncUnimplementedStreamingCall(getGreetEveryoneMethod(), responseObserver);
     }
 
+    /**
+     * <pre>
+     *example deadline
+     * </pre>
+     */
+    public void greetWithDeadLine(com.proto.greet.GreetWithDeadLineRequest request,
+        io.grpc.stub.StreamObserver<com.proto.greet.GreetWithDeadLineResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getGreetWithDeadLineMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -260,6 +301,13 @@ public final class GreetServiceGrpc {
                 com.proto.greet.GreetEveryoneRequest,
                 com.proto.greet.GreetEveryoneResponse>(
                   this, METHODID_GREET_EVERYONE)))
+          .addMethod(
+            getGreetWithDeadLineMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.proto.greet.GreetWithDeadLineRequest,
+                com.proto.greet.GreetWithDeadLineResponse>(
+                  this, METHODID_GREET_WITH_DEAD_LINE)))
           .build();
     }
   }
@@ -312,6 +360,17 @@ public final class GreetServiceGrpc {
       return asyncBidiStreamingCall(
           getChannel().newCall(getGreetEveryoneMethod(), getCallOptions()), responseObserver);
     }
+
+    /**
+     * <pre>
+     *example deadline
+     * </pre>
+     */
+    public void greetWithDeadLine(com.proto.greet.GreetWithDeadLineRequest request,
+        io.grpc.stub.StreamObserver<com.proto.greet.GreetWithDeadLineResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGreetWithDeadLineMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -345,6 +404,16 @@ public final class GreetServiceGrpc {
       return blockingServerStreamingCall(
           getChannel(), getGreetManyTimesMethod(), getCallOptions(), request);
     }
+
+    /**
+     * <pre>
+     *example deadline
+     * </pre>
+     */
+    public com.proto.greet.GreetWithDeadLineResponse greetWithDeadLine(com.proto.greet.GreetWithDeadLineRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getGreetWithDeadLineMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -371,12 +440,24 @@ public final class GreetServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getGreetMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     *example deadline
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.proto.greet.GreetWithDeadLineResponse> greetWithDeadLine(
+        com.proto.greet.GreetWithDeadLineRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGreetWithDeadLineMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GREET = 0;
   private static final int METHODID_GREET_MANY_TIMES = 1;
-  private static final int METHODID_LONG_GREET = 2;
-  private static final int METHODID_GREET_EVERYONE = 3;
+  private static final int METHODID_GREET_WITH_DEAD_LINE = 2;
+  private static final int METHODID_LONG_GREET = 3;
+  private static final int METHODID_GREET_EVERYONE = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -402,6 +483,10 @@ public final class GreetServiceGrpc {
         case METHODID_GREET_MANY_TIMES:
           serviceImpl.greetManyTimes((com.proto.greet.GreetManyTimesRequest) request,
               (io.grpc.stub.StreamObserver<com.proto.greet.GreetManyTimesResponse>) responseObserver);
+          break;
+        case METHODID_GREET_WITH_DEAD_LINE:
+          serviceImpl.greetWithDeadLine((com.proto.greet.GreetWithDeadLineRequest) request,
+              (io.grpc.stub.StreamObserver<com.proto.greet.GreetWithDeadLineResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -474,6 +559,7 @@ public final class GreetServiceGrpc {
               .addMethod(getGreetManyTimesMethod())
               .addMethod(getLongGreetMethod())
               .addMethod(getGreetEveryoneMethod())
+              .addMethod(getGreetWithDeadLineMethod())
               .build();
         }
       }

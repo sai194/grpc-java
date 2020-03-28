@@ -7,9 +7,12 @@ import com.proto.greet.GreetManyTimesResponse;
 import com.proto.greet.GreetRequest;
 import com.proto.greet.GreetResponse;
 import com.proto.greet.GreetServiceGrpc;
+import com.proto.greet.GreetWithDeadLineRequest;
+import com.proto.greet.GreetWithDeadLineResponse;
 import com.proto.greet.Greeting;
 import com.proto.greet.LongGreetRequest;
 import com.proto.greet.LongGreetResponse;
+import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 import java.text.MessageFormat;
 
@@ -109,5 +112,26 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
         };
 
     return greetEveryoneRequestStreamObserver;
+  }
+
+  @Override
+  public void greetWithDeadLine(GreetWithDeadLineRequest request,
+      StreamObserver<GreetWithDeadLineResponse> responseObserver) {
+    Context current  = Context.current();
+     for ( int i =0; i< 3; i++) {
+       try {
+         if (!current.isCancelled()) {
+           Thread.sleep(100);
+         }else {
+           return;
+         }
+       } catch (InterruptedException e) {
+         e.printStackTrace();
+       }
+     }
+     responseObserver.onNext(GreetWithDeadLineResponse.newBuilder()
+     .setResult("hello "+request.getGreeting().getFirstName())
+     .build());
+     responseObserver.onCompleted();
   }
 }
