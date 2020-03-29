@@ -1,5 +1,8 @@
 # grpc-java
 
+## Description
+Implemented unary, client stream, server stream and bi-di stream operations
+
 ##Run mongo container
 ```
 docker run --name grpc-mongo \
